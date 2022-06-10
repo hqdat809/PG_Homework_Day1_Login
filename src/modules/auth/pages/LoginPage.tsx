@@ -27,21 +27,23 @@ const LoginPage = () => {
       setLoading(true);
 
       const json = await dispatch(
-        fetchThunk(API_PATHS.signIn, 'post', { email: values.email, password: values.password }),
+        fetchThunk(API_PATHS.signIn, 'post', { email: values.email, password: values.password })
       );
 
       setLoading(false);
 
       if (json?.code === RESPONSE_STATUS_SUCCESS) {
         dispatch(setUserInfo(json.data));
-        Cookies.set(ACCESS_TOKEN_KEY, json.data.token, { expires: values.rememberMe ? 7 : undefined });
+        Cookies.set(ACCESS_TOKEN_KEY, json.data.token, {
+          expires: values.rememberMe ? 7 : undefined,
+        });
         dispatch(replace(ROUTES.home));
         return;
       }
 
       setErrorMessage(getErrorMessageResponse(json));
     },
-    [dispatch],
+    [dispatch]
   );
 
   return (

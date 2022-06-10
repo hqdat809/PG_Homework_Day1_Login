@@ -1,10 +1,10 @@
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { ILoginParams } from '../../../models/auth';
-import EmailField from '../../component/EmailField';
-import PasswordField from '../../component/PasswordField';
-import { SignupSchema } from '../utils';
+import { ILoginParams } from 'models/auth';
+import EmailField from 'modules/component/EmailField';
+import PasswordField from 'modules/component/PasswordField';
+import { SignupSchema } from 'modules/auth/utils';
 
 interface Props {
   onLogin(values: ILoginParams): void;
@@ -83,7 +83,12 @@ const LoginForm = (props: Props) => {
               <PasswordField error={errors.password} isToached={touched.password} />
 
               <div>
-                <Field type="checkbox" name="rememberMe" id="rememberMe" className="form-check-input" />
+                <Field
+                  type="checkbox"
+                  name="rememberMe"
+                  id="rememberMe"
+                  className="form-check-input"
+                />
                 <label className="form-check-label" htmlFor="invalidCheck">
                   <FormattedMessage id="rememberMe" />
                 </label>

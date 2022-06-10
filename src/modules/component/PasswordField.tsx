@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field } from 'formik';
-import './InputElement.css';
+import 'modules/component/InputElement.css';
 import { FormattedMessage } from 'react-intl';
 
 interface Props {

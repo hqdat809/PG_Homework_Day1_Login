@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
-import LoginForm from '../components/LoginForm2';
-import logo from '../../../logo-420-x-108.png';
-import { ILoginParams } from '../../../models/auth';
+import LoginForm from 'modules/auth/components/LoginForm2';
+import logo from 'logo-420-x-108.png';
+import { ILoginParams } from 'models/auth';
 import { useDispatch } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
-import { AppState } from '../../../redux/reducer';
+import { AppState } from 'redux/reducer';
 import { Action } from 'redux';
-import { fetchThunk } from '../../common/redux/thunk';
-import { API_PATHS } from '../../../configs/api';
-import { RESPONSE_STATUS_SUCCESS } from '../../../utils/httpResponseCode';
-import { setUserInfo } from '../redux/authReducer';
+import { fetchThunk } from 'modules/common/redux/thunk';
+import { API_PATHS } from 'configs/api';
+import { RESPONSE_STATUS_SUCCESS } from 'utils/httpResponseCode';
+import { setUserInfo } from 'modules/auth/redux/authReducer';
 import Cookies from 'js-cookie';
-import { ACCESS_TOKEN_KEY, IS_REMEMBER, IS_REMEMBER_TRUE, IS_REMEMBER_FALSE } from '../../../utils/constants';
+import {
+  ACCESS_TOKEN_KEY,
+  IS_REMEMBER,
+  IS_REMEMBER_TRUE,
+  IS_REMEMBER_FALSE,
+} from '../../../utils/constants';
 import { ROUTES } from '../../../configs/routes';
 import { replace } from 'connected-react-router';
 import { getErrorMessageResponse } from '../../../utils';
@@ -28,7 +33,7 @@ const LoginPage = () => {
       setLoading(true);
 
       const json = await dispatch(
-        fetchThunk(API_PATHS.signIn, 'post', { email: values.email, password: values.password }),
+        fetchThunk(API_PATHS.signIn, 'post', { email: values.email, password: values.password })
       );
 
       setLoading(false);
@@ -40,7 +45,9 @@ const LoginPage = () => {
           Cookies.set(IS_REMEMBER, IS_REMEMBER_FALSE);
         }
         dispatch(setUserInfo(json.data));
-        Cookies.set(ACCESS_TOKEN_KEY, json.data.token, { expires: values.rememberMe ? 7 : undefined });
+        Cookies.set(ACCESS_TOKEN_KEY, json.data.token, {
+          expires: values.rememberMe ? 7 : undefined,
+        });
         dispatch(replace(ROUTES.home));
 
         return;
@@ -48,7 +55,7 @@ const LoginPage = () => {
 
       setErrorMessage(getErrorMessageResponse(json));
     },
-    [dispatch],
+    [dispatch]
   );
 
   return (
