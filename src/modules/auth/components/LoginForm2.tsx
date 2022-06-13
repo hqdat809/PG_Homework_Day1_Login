@@ -1,10 +1,11 @@
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+
 import { ILoginParams } from 'models/auth';
+import { LoginSchema } from 'modules/auth/utils';
 import EmailField from 'modules/component/EmailField';
 import PasswordField from 'modules/component/PasswordField';
-import { SignupSchema } from 'modules/auth/utils';
 
 interface Props {
   onLogin(values: ILoginParams): void;
@@ -65,7 +66,7 @@ const LoginForm = (props: Props) => {
             onLogin(values);
           }, 500);
         }}
-        validationSchema={SignupSchema}
+        validationSchema={LoginSchema}
       >
         {({ touched, errors }) => {
           return (

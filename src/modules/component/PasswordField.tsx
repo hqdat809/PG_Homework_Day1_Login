@@ -1,7 +1,8 @@
 import React from 'react';
 import { Field } from 'formik';
-import 'modules/component/InputElement.css';
 import { FormattedMessage } from 'react-intl';
+
+import 'modules/component/InputElement.css';
 
 interface Props {
   error: string | undefined;
