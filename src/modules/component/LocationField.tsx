@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Field } from 'formik';
 import { FormattedMessage } from 'react-intl';
 
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const LocationField = (props: Props) => {
-  const { error, isToached, options, value, onChange } = props;
+  const { error, isToached, options, onChange, value } = props;
 
   return (
     <div>

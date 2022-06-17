@@ -37,7 +37,6 @@ interface Props {
 const SignUpForm = (props: Props) => {
   const dispatch = useDispatch<ThunkDispatch<AppState, null, Action<string>>>();
   const { onSignUp, loading, errorMessage, locations, getCity, city } = props;
-  const [regionId, setRegionId] = useState<number | undefined>();
 
   return (
     <Formik
@@ -57,19 +56,20 @@ const SignUpForm = (props: Props) => {
       validationSchema={SignupSchema}
     >
       {({ touched, errors, handleChange, values }) => {
+        // Xử lý khi quốc gia thay đổi
         React.useEffect(() => {
           if (values.region) {
             if (typeof values.region === 'string') {
               values.region = parseInt(values.region);
             }
-            setRegionId(values.region);
-            if (regionId) {
-              getCity(regionId);
+            if (values.region) {
+              getCity(values.region);
             }
           }
           values.state = 0;
         }, [values.region]);
 
+        // Xử lý khi thành phố thay đổi
         React.useEffect(() => {
           if (typeof values.state === 'string') {
             values.state = parseInt(values.state);
