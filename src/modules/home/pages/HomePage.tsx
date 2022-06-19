@@ -1,59 +1,38 @@
 import { replace } from 'connected-react-router';
 import Cookies from 'js-cookie';
-import { IDataItem } from 'models/home';
-import { fetchThunk } from 'modules/common/redux/thunk';
-import ItemInfor from 'modules/component/ItemInfor';
-import LoadingItemInfor from 'modules/component/LoadingItemInfor';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Action } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
-import { ROUTES } from '../../../configs/routes';
-import { AppState } from '../../../redux/reducer';
-import { IS_REMEMBER, IS_REMEMBER_FALSE } from '../../../utils/constants';
-import { setListItem, setMoreItem, cleanDataItem } from '../redux/homeReducer';
+
+import { fetchThunk } from 'modules/common/redux/thunk';
+import ItemInfor from 'modules/component/ItemInfor';
+import LoadingItemInfor from 'modules/component/LoadingItemInfor';
+import { ROUTES } from 'configs/routes';
+import { AppState } from 'redux/reducer';
+import { IS_REMEMBER, IS_REMEMBER_FALSE } from 'utils/constants';
+import {
+  setListItem,
+  setMoreItem,
+  confirmChange,
+  resetItems,
+} from 'modules/home/redux/homeReducer';
 import './HomePage.css';
 
-interface Props {}
-
-const HomePage = (props: Props) => {
-  const [page, setPage] = useState(2);
-  const [isLoading, setIsLoading] = useState(false);
+const HomePage = () => {
   const dispatch = useDispatch<ThunkDispatch<AppState, null, Action<string>>>();
+  const listItem = useSelector((state: AppState) => state.home.newInforItems);
+  const isChanged = useSelector((state: AppState) => !state.home.isEqual);
+  const buttonReset = document.getElementsByClassName('buttonReset');
+  const buttonConfirm = document.getElementsByClassName('buttonConfirm');
+
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDataChanged, setIsDataChanged] = useState(false);
+
   const handleLogout = () => {
     Cookies.set(IS_REMEMBER, IS_REMEMBER_FALSE);
     dispatch(replace(ROUTES.login));
-  };
-  const listUser = useSelector((state: AppState) => state.home.inforItems);
-
-  const handleGetInforUsers = async () => {
-    setIsLoading(true);
-
-    const json = await dispatch(
-      fetchThunk(`https://jsonplaceholder.typicode.com/photos?_page=1&_limit=10`, 'get')
-    );
-
-    dispatch(setListItem(json));
-
-    console.log(json);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-  };
-
-  const handleGetMoreItem = async () => {
-    setIsLoading(true);
-
-    const json = await dispatch(
-      fetchThunk(`https://jsonplaceholder.typicode.com/photos?_page=${page}&_limit=${10}`, 'get')
-    );
-
-    dispatch(setMoreItem(json));
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
   };
 
   window.onscroll = () => {
@@ -66,14 +45,30 @@ const HomePage = (props: Props) => {
     }
   };
 
-  console.log(listUser);
+  const handleGetMoreItem = React.useCallback(async () => {
+    setIsLoading(true);
 
-  const handleCleanBeforeUnmout = () => {
-    dispatch(cleanDataItem());
+    const json = await dispatch(
+      fetchThunk(`https://jsonplaceholder.typicode.com/photos?_page=${page}&_limit=${10}`, 'get')
+    );
+
+    if (page === 1) {
+      dispatch(setListItem(json));
+    } else {
+      dispatch(setMoreItem(json));
+    }
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, [page]);
+
+  const scrollToTop = () => {
+    window.scrollTo(0, 0);
   };
 
   React.useEffect(() => {
-    return handleCleanBeforeUnmout();
+    return scrollToTop();
   }, []);
 
   React.useEffect(() => {
@@ -81,9 +76,16 @@ const HomePage = (props: Props) => {
   }, [page]);
 
   React.useEffect(() => {
-    handleGetInforUsers();
-    console.log('useEffect chay');
-  }, []);
+    buttonReset[0].addEventListener('click', () => {
+      dispatch(resetItems());
+    });
+  });
+
+  React.useEffect(() => {
+    buttonConfirm[0].addEventListener('click', () => {
+      dispatch(confirmChange());
+    });
+  });
 
   return (
     <div>
@@ -92,17 +94,39 @@ const HomePage = (props: Props) => {
         <button onClick={handleLogout} className="btn btn-primary">
           Đăng xuất
         </button>
-        <button onClick={handleGetMoreItem} className="btn btn-primary">
-          Load more data
-        </button>
       </header>
 
       <div className="content">
-        {listUser &&
-          listUser.map((item, index) => {
+        <div className="buttons-mange">
+          <button
+            style={{ marginRight: '20px', border: 'none' }}
+            // onClick={handleConfirm}
+            disabled={!isChanged}
+            className="buttonConfirm"
+          >
+            Confirm
+          </button>
+          <button
+            className="buttonReset"
+            style={{ marginRight: '20px', border: 'none' }}
+            // onClick={(e) => handleReset(e)}
+            disabled={!isChanged}
+          >
+            Reset
+          </button>
+        </div>
+
+        {listItem &&
+          listItem.map((item, index) => {
             return (
               <>
-                <ItemInfor item={item} key={index} />
+                <ItemInfor
+                  buttonReset={buttonReset}
+                  buttonConfirm={buttonConfirm}
+                  item={item}
+                  key={index}
+                  setIsDataChanged={setIsDataChanged}
+                />
               </>
             );
           })}

@@ -5,5 +5,4 @@ export interface IDataItem {
   title: string;
   url: string;
   thumnailUrl: string;
-  isLoading: boolean;
 }
