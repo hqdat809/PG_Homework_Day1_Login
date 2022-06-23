@@ -1,0 +1,81 @@
+.table-manager {
+    padding: 50px;
+}
+
+
+.wrapper-table {
+    background-color: rgb(206, 223, 223);
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.item-table {
+    background-color: #fff;
+    border-radius: 10px;
+}
+.pagination {
+    display: flex;
+    gap: 5px;
+}
+
+.pagination li a {
+    padding: 5px 5px;
+}
+
+.pagination .selected {
+    background-color: rgb(79, 196, 255);
+}
+
+.pagination .selected  a{
+    color: #fff;
+}
+
+.pagination .next a,
+.pagination .previous a{
+    color: rgb(79, 196, 255);
+    text-decoration: none!important;
+}
+
+.pagination .next.disabled a,
+.pagination .previous.disabled a {
+    color: #ccc!important;
+}
+
+.form-filter {
+    display: flex;
+    justify-content: space-between;
+    flex: 3;
+    gap: 10px;
+}
+
+.form-filter .mb-3 {
+    width: 90%;
+}
+
+.btns-action {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 10px;
+    flex: 1;
+}
+
+.modal.active {
+    display: block;
+}
+
+.btns-action button {
+    margin-top: 7px;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 200px;
+}
+
+.btn-clear-filter {
+    background-color: rgb(252, 120, 120);
+    color: #fff;
+}
+
+.sort-total:hover {
+    cursor: pointer!important;
+}

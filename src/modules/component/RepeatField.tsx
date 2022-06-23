@@ -9,18 +9,18 @@ interface Props {
   isToached: boolean | undefined;
 }
 
-const EmailField = (props: Props) => {
+const RepeatField = (props: Props) => {
   const { error, isToached } = props;
 
   return (
     <div>
       <label htmlFor="inputEmail" className="form-label">
-        <FormattedMessage id="email" />
+        <FormattedMessage id="repeatPassword" />
       </label>
       <Field
-        type="email"
-        name="email"
-        placeholder="Enter your email"
+        type="password"
+        name="repeatPassword"
+        placeholder="Repeat Your Password"
         className={`form-control ${error && isToached && 'error-input'}`}
         id="inputEmail"
       />
@@ -29,4 +29,4 @@ const EmailField = (props: Props) => {
   );
 };
 
-export default EmailField;
+export default RepeatField;

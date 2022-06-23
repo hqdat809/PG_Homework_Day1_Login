@@ -15,3 +15,12 @@
   height: auto;
   width: auto;
 }
+
+.btn-signup {
+  color: blue;
+  text-decoration: underline;
+}
+
+.btn-signup:hover {
+  cursor: pointer;
+}

@@ -1,5 +1,6 @@
 export const ROUTES = {
-  home: '/home',
-  contact: '/contact',
+  reduxPage: '/reduxPage',
+  tableManager: '/tableManager',
   login: '/login',
+  signUp: '/signUp',
 };

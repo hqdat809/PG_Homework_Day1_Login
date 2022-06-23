@@ -18,7 +18,7 @@ import {
   IS_REMEMBER_FALSE,
 } from '../../../utils/constants';
 import { ROUTES } from '../../../configs/routes';
-import { replace } from 'connected-react-router';
+import { replace, push } from 'connected-react-router';
 import { getErrorMessageResponse } from '../../../utils';
 import './LoginPage.css';
 
@@ -26,6 +26,10 @@ const LoginPage = () => {
   const dispatch = useDispatch<ThunkDispatch<AppState, null, Action<string>>>();
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const redirectToSignUpPage = () => {
+    dispatch(push(ROUTES.signUp));
+  };
 
   const onLogin = React.useCallback(
     async (values: ILoginParams) => {
@@ -48,7 +52,7 @@ const LoginPage = () => {
         Cookies.set(ACCESS_TOKEN_KEY, json.data.token, {
           expires: values.rememberMe ? 7 : undefined,
         });
-        dispatch(replace(ROUTES.home));
+        dispatch(replace(ROUTES.reduxPage));
 
         return;
       }
@@ -63,6 +67,12 @@ const LoginPage = () => {
       <div className="wrapper-login-page">
         <img src={logo} alt="" />
         <LoginForm onLogin={onLogin} loading={loading} errorMessage={errorMessage} />
+        <p className="signup">
+          Bạn chưa có tài khoản ?{' '}
+          <span className="btn-signup" onClick={redirectToSignUpPage}>
+            Đăng kí
+          </span>
+        </p>
       </div>
     </div>
   );

@@ -9,24 +9,24 @@ interface Props {
   isToached: boolean | undefined;
 }
 
-const EmailField = (props: Props) => {
+const NameField = (props: Props) => {
   const { error, isToached } = props;
 
   return (
     <div>
       <label htmlFor="inputEmail" className="form-label">
-        <FormattedMessage id="email" />
+        <FormattedMessage id="fullName" />
       </label>
       <Field
-        type="email"
-        name="email"
-        placeholder="Enter your email"
+        type="text"
+        name="name"
+        placeholder="Enter your full name"
         className={`form-control ${error && isToached && 'error-input'}`}
-        id="inputEmail"
+        id="inputName"
       />
       {error && isToached && <div className="input-feedback">{error}</div>}
     </div>
   );
 };
 
-export default EmailField;
+export default NameField;
