@@ -51,11 +51,16 @@ export const sortByTotalDecrease = createCustomAction('table/sortByTotalDecrease
   return;
 });
 
+export const resetPage = createCustomAction('table/resetPage', () => {
+  return;
+});
+
 const actions = {
   setRenderingData,
   deleteData,
   filterData,
   clearFilter,
+  resetPage,
   sortByTotalIncrease,
   sortByTotalDecrease,
 };
@@ -173,6 +178,10 @@ export default function reducer(state: TableState = InitTableState, action: Acti
         newFilterdData.reverse();
       }
       return { ...state, filteredData: newFilterdData };
+    }
+
+    case getType(resetPage): {
+      return InitTableState;
     }
 
     default:

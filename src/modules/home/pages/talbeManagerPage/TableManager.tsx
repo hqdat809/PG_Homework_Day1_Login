@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
-import { setRenderingData } from 'modules/home/redux/tableReducer';
+import { resetPage, setRenderingData } from 'modules/home/redux/tableReducer';
 import 'modules/home/pages/talbeManagerPage/TableManager.css';
 import FormFilter from 'modules/component/TableComponent/FormFilter';
 import Table from 'modules/component/TableComponent/Table';
@@ -18,6 +18,14 @@ const TableManager = () => {
 
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
+
+  const resetBeforeReload = () => {
+    dispatch(resetPage());
+  };
+
+  React.useEffect(() => {
+    return resetBeforeReload();
+  }, []);
 
   React.useEffect(() => {
     dispatch(setRenderingData(page));
