@@ -17,46 +17,7 @@ const LoginForm = (props: Props) => {
 
   return (
     <>
-      <div>
-        {/* <h1>Signup</h1>
-      <Formik
-        initialValues={{
-          email: '',
-          password: '',
-          rememberMe: true,
-        }}
-        validationSchema={SignupSchema}
-        onSubmit={(values) => {
-          onLogin({
-            email: values.email,
-            password: values.password,
-            rememberMe: values.rememberMe,
-          });
-        }}
-      >
-        {({ errors, touched }) => (
-          <Form>
-            <Field
-              name="email"
-              render={({ field, form: { touched, errors } }: FieldProps<any>) => (
-                <div>
-                  <input {...field} type="email" placeholder="Email" />
-                  {touched[field.name] && errors[field.name] && <div className="error">{errors[field.name]}</div>}
-                </div>
-              )}
-            />
-            <Field name="password" />
-            {errors.password && touched.password ? <div>{errors.password}</div> : null}
-            {!!errorMessage && (
-              <div className="alert alert-danger" role="alert" style={{ width: '100%' }}>
-                {errorMessage}
-              </div>
-            )}
-            <button type="submit">{loading ? `Submitting` : `Submit`}</button>
-          </Form>
-        )}
-      </Formik> */}
-      </div>
+      <div></div>
       <Formik
         initialValues={{ email: '', password: '', rememberMe: false }}
         onSubmit={(values, { setSubmitting }) => {
@@ -69,11 +30,7 @@ const LoginForm = (props: Props) => {
       >
         {({ touched, errors }) => {
           return (
-            <Form
-              // style={{ maxWidth: '560px', width: '100%' }}
-              // onSubmit={handleSubmit}
-              className="row g-3 needs-validation form-login"
-            >
+            <Form className="row g-3 needs-validation form-login">
               {!!errorMessage && (
                 <div className="alert alert-danger" role="alert" style={{ width: '100%' }}>
                   {errorMessage}

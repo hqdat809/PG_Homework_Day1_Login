@@ -9,13 +9,16 @@ import { Action } from 'redux';
 import { fetchThunk } from 'modules/common/redux/thunk';
 import { API_PATHS } from 'configs/api';
 import { RESPONSE_STATUS_SUCCESS } from 'utils/httpResponseCode';
-import { setUserInfo } from 'modules/auth/redux/authReducer';
+import { setAuthorization, setUserInfo } from 'modules/auth/redux/authReducer';
+import { setIsLogged } from 'modules/auth/redux/authReducer';
 import Cookies from 'js-cookie';
 import {
   ACCESS_TOKEN_KEY,
   IS_REMEMBER,
   IS_REMEMBER_TRUE,
   IS_REMEMBER_FALSE,
+  IS_LOGGED_IN,
+  USER_INFO,
 } from '../../../utils/constants';
 import { ROUTES } from '../../../configs/routes';
 import { replace } from 'connected-react-router';
@@ -35,19 +38,32 @@ const LoginPage = () => {
       const json = await dispatch(
         fetchThunk(API_PATHS.signIn, 'post', { email: values.email, password: values.password })
       );
+      console.log(json);
 
       setLoading(false);
 
-      if (json?.code === RESPONSE_STATUS_SUCCESS) {
+      if (!json?.errors) {
+        console.log('succes');
+
         if (values.rememberMe) {
           Cookies.set(IS_REMEMBER, IS_REMEMBER_TRUE);
         } else {
           Cookies.set(IS_REMEMBER, IS_REMEMBER_FALSE);
         }
-        dispatch(setUserInfo(json.data));
-        Cookies.set(ACCESS_TOKEN_KEY, json.data.token, {
+
+        Cookies.set(ACCESS_TOKEN_KEY, json.user_cookie, {
           expires: values.rememberMe ? 7 : undefined,
         });
+
+        Cookies.set(USER_INFO, JSON.stringify(json.user), {
+          expires: values.rememberMe ? 7 : undefined,
+        });
+
+        // Cookies.set(IS_LOGGED_IN, "true", { expires: values.rememberMe ? 7 : undefined });
+
+        dispatch(setUserInfo(json.user));
+        dispatch(setAuthorization(json.user_cookie));
+
         dispatch(replace(ROUTES.home));
 
         return;

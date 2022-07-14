@@ -44,3 +44,28 @@ export const SignupSchema = Yup.object().shape({
     .min(6, 'Password is too short - should be 8 chars minimum.')
     .matches(/(?=.*[0-9])/, 'Password must contain a number.'),
 });
+
+export const CreateUserSchema = Yup.object().shape({
+  email: Yup.string().email().required('Required'),
+  password: Yup.string()
+    .required('No password provided.')
+    .min(6, 'Password is too short - should be 8 chars minimum.')
+    .matches(/(?=.*[0-9])/, 'Password must contain a number.'),
+  confirm_password: Yup.string()
+    .required('Please repeat your password')
+    .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+  firstName: Yup.string().required('Please enter your first name'),
+  lastName: Yup.string().required('Please enter your last name'),
+});
+
+export const CreateProductSchema = Yup.object().shape({
+  name: Yup.string().required('This field is required'),
+  price: Yup.number().required('This field is required'),
+  quantity: Yup.string().required('This field is required'),
+});
+
+export const UpdateUserSchema = Yup.object().shape({
+  email: Yup.string().email().required('Required'),
+  firstName: Yup.string().required('Please enter your first name'),
+  lastName: Yup.string().required('Please enter your last name'),
+});
